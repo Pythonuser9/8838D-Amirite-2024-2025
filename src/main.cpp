@@ -7,7 +7,6 @@
 //#include "odometry.h"
 using namespace std;
 using namespace pros;
-#define target
 
 
 /**
@@ -16,6 +15,10 @@ using namespace pros;
  * When this callback is fired, it will toggle line 2 of the LCD text between
  * "I was pressed!" and nothing.
  */
+
+
+
+
 void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
@@ -37,6 +40,7 @@ void initialize() {
 	pros::lcd::set_text(1, "It's go time!! ");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+
 }
 
 /**
@@ -92,7 +96,7 @@ while(true){
 		con.print(0,0, "aut 0: %s", autstr);
 	}
 	else if(atn == 1) {
-		autstr = "BlueLeft";
+		autstr = "BlueRight";
 		con.print(0,0, "aut 1: %s", autstr);
 	}
 	else if(atn == 2) {
@@ -100,36 +104,37 @@ while(true){
 		con.print(0,0, "aut 2: %s", autstr);
 	}
 	else if(atn == 3) {
-		autstr = "BlueRight";
+		autstr = "BlueLeft";
 		con.print(0,0, "aut 3: %s", autstr);
 	}
 	else if(atn == 4) {
-		autstr = "RedLeftElims";
+		autstr = "Sig Awp Red";
 		con.print(0,0, "aut 4: %s", autstr);
 	}
 	else if(atn == 5) {
-		autstr = "BlueRightElims";
+		autstr = "Sig Awp Blue";
 		con.print(0,0, "aut 5: %s", autstr);
 	}
 	else if(atn == 6) {
-		autstr = "RedRightElims";
+		autstr = "Skills";
 		con.print(0,0, "aut 6: %s", autstr);
 	}
 	else if(atn == 7) {
-		autstr = "BlueLeftElimsElims";
-		con.print(0,0, "aut 7: %s", autstr);
-	}
-	else if(atn == 8) {
-		autstr = "Skills";
-		con.print(0,0, "aut 8: %s", autstr);
-	}
-	else if(atn == 9) {
 		autstr = "Safety";
-		con.print(0,0, "aut 9: %s", autstr);
-	}
-	else if(atn == 10){
+		con.print(0,0, "aut 7: %s", autstr);
 		atn = 0;
 	}
+	// else if(atn == 8) {
+	// 	autstr = "Skills";
+	// 	con.print(0,0, "aut 8: %s", autstr);
+	// }
+	// else if(atn == 9) {
+	// 	autstr = "Safety";
+	// 	con.print(0,0, "aut 9: %s", autstr);
+	// }
+	// else if(atn == 10){
+	// 	atn = 0;
+	// }
 
 	con.clear();}
 	
@@ -161,30 +166,41 @@ while(true){
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+
+
+
 void opcontrol() {
 	LF.set_brake_mode(E_MOTOR_BRAKE_COAST);
 	bool arcToggle = true;
 	bool tankToggle = false;
-	bool PistonsForMogo = true;
+	bool PistonsForMogo = false;
 	int lift_macro = 0;
 	bool lift_toggle = false;
 	bool doinker = false;
+	// bool intakepiston = true;
 	bool NEWR1 = false;
 	bool NEWR2 = false;
 	double lift_angle = 0;
-	
+	double rotoangle = 0;
 	int time = 0;
-	//bool Intakepiston = false;
 	string red;
 	string blue;
 	
 	int color_selec = 1;
 	//Eyesight.set_led_pwm(100);
 while (true){
-	// if (con.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
-	// 	arcToggle = !arcToggle;
-	// 	tankToggle = !tankToggle;
-	// }
+	   
+
+
+
+
+
+	if (con.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
+		arcToggle = !arcToggle;
+		tankToggle = !tankToggle;
+	}
+
 	if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_R1)){
 		NEWR1 = true;
 	} else {
@@ -227,16 +243,16 @@ while (true){
 }
 //auton selector
 if(atn == 0) {
-		autstr = "RedLeft";
+		autstr = "Red ring";
 	}
 	if(atn == 1) {
-		autstr = "BlueRight";
+		autstr = "Blue ring";
 	}
 	if(atn == 2) {
-		autstr = "RedRight";
+		autstr = "Blue mogo";
 	}
 	if(atn == 3) {
-		autstr = "BlueLeft";
+		autstr = "Red mogo";
 	}
 	if(atn == 4) {
 		autstr = "RedLeftElims";
@@ -289,14 +305,14 @@ if(atn == 0) {
 /////////////////////////////////////////////
 	
 	// if (((con.get_digital(E_CONTROLLER_DIGITAL_R1) && NEWR2) || (con.get_digital(E_CONTROLLER_DIGITAL_R2) && NEWR1)) || (NEWR1 && NEWR2)){
-	// doinker = !doinker;	
+	// lift_macro = 0;
 	// } else if(con.get_digital(E_CONTROLLER_DIGITAL_R2)){
-	// 	Rings(-127);
+	// 	Intake.move(-127);
 	// } else if (con.get_digital(E_CONTROLLER_DIGITAL_R1)){
-	// 	Rings(127);
+	// 	Intake.move(127);
 	// }
 	// else  {
-	// 	Rings(0);
+	// 	Intake.move(0);
 	// }
 
 
@@ -308,6 +324,21 @@ if(atn == 0) {
 	Intake.move(0);
 	}
 
+
+if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_X)){
+
+
+lift_macro = 0;
+
+}
+
+
+if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_A)){
+
+	lift_macro = 0;
+
+}
+
 if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
 	PistonsForMogo = !PistonsForMogo;
 }
@@ -317,13 +348,33 @@ if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
 	doinker = !doinker;
 }
 Doinker.set_value(doinker);
+
+// if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){
+// 	intakepiston = !intakepiston;
+// }
+// Intakepiston.set_value(intakepiston);
+
+
+
+
 //
 
 
-// if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){
-// 	flipout = !flipout;
-// }
-// Flipout.set_value(flipout);
+
+// 	if (roto.get_position() < 300) {
+// 	LIFT.move(127);
+// 	lift_angle = LIFT.get_position();
+// 	lift_toggle = false;
+// 	} else {
+// 	setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
+// 	LIFT.move(calcPID(lift_angle, LIFT.get_position(), 0, 0));
+// 	}}
+
+
+
+
+
+
 
 
 
@@ -335,10 +386,29 @@ if (con.get_digital(E_CONTROLLER_DIGITAL_L1)){
 	LIFT.move(-127);
 	lift_angle = LIFT.get_position();
 	lift_toggle = false;
-} else{
+} else {
 	setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
 	LIFT.move(calcPID(lift_angle, LIFT.get_position(), 0, 0));
 } 
+
+
+
+// if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)){
+// while (roto.get_position() > LIFT_TARGET_HEIGHT){
+// 	LIFT.move(-127);
+// 	lift_angle = LIFT.get_position();
+// 	lift_toggle = false;
+// 	delay(20);
+// } 	setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
+// 	LIFT.move(calcPID(lift_angle, LIFT.get_position(), 0, 0));
+// }
+
+
+
+
+
+
+
 
 
 // if(con.get_digital(E_CONTROLLER_DIGITAL_L2)){
@@ -353,39 +423,35 @@ if (con.get_digital(E_CONTROLLER_DIGITAL_L1)){
 // 	}
 
 
-// if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
-// 	lift_macro++;
-// 	lift_toggle = true;
-// }
-
-// if (lift_toggle){
-// 	if (lift_macro == 0) {
-// 		setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
-//  		LIFT.move(calcPIDlift(0, roto.get_angle(), 0, 0, 2));
-// 	} else if (lift_macro == 1) {
-// 		setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
-//  		LIFT.move(calcPIDlift(200, roto.get_angle(), 3, 5, 2));
-// 	} else if (lift_macro == 2) {
-// 		setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
-//  		LIFT.move(calcPIDlift(3000, roto.get_angle(), 0, 0, 2));
-// 	} else if (lift_macro >= 3) {
-// 		lift_macro = 0;
-// 	}
-// }
-
-
-
-
-
-// if (con.get_digital(E_CONTROLLER_DIGITAL_X)){
-// 	driveArcL(90, 1000, 10000);
-// }
+if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
+	lift_macro++;
+	lift_toggle = true;
 }
 
-// if(con.get_digital_new_press(E_CONTROLLER_DIGITAL_A)){
-// driveTurn(10);
-// }
+rotoangle = roto.get_angle();
+if (rotoangle > 33000){
+	rotoangle = rotoangle - 36000;
+}
 
+if (lift_toggle){
+	if (lift_macro == 0) {
+		setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
+ 		LIFT.move(calcPIDlift(500, roto.get_angle(), 0, 0, 3));
+	} else if (lift_macro == 1) {
+		setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
+ 		LIFT.move(calcPIDlift(3850, roto.get_angle(), .01, 1, 3));
+	} else if (lift_macro == 2){
+        setConstants(TOP_KP, TOP_KI, TOP_KD);
+ 		LIFT.move(calcPIDlift(15000, roto.get_angle(), 0, 0, 1));
+    } else {
+		lift_macro = 0;
+	}
+}
+
+// else if (lift_macro == 2) {
+// 		setConstants(LIFT_KP, LIFT_KI, LIFT_KD);
+//  		LIFT.move(calcPIDlift(5300, roto.get_angle(), 0, 0, 3));
+// 	} 
 
 pros::delay(1);
 time += 1;
@@ -399,6 +465,17 @@ con.print(1, 0, "ERROR %f 			", float (error));
 }
 
 }
+
+
+
+// if (con.get_digital(E_CONTROLLER_DIGITAL_X)){
+// 	driveArcL(90, 1000, 10000);
+// }
+}
+
+
+
+
 
 
 

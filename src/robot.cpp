@@ -15,7 +15,7 @@ using namespace pros;
 // #define HOOKS_PORT 8 //hooks 
 #define LIFT_PORT 7 //lift
 #define OPTICAL_PORT  // color switch, maybe prob not
-#define ROTO_PORT 20
+#define ROTO_PORT 10
 
 
 
@@ -35,7 +35,7 @@ pros::ADIDigitalOut Mogo ('B', false);
 // pros::ADIDigitalOut DaSorter ('B', false);
 pros::ADIDigitalOut Doinker ('A', false);
 pros::ADIDigitalIn selec ('C');
-pros::ADIDigitalOut Intakepiston ('C');
+// pros::ADIDigitalOut Intakepiston ('C');
 //pros::ADIAnalogIn DistanceSense ('A');
 pros::Controller con (pros::E_CONTROLLER_MASTER);
 pros::Rotation roto(ROTO_PORT);

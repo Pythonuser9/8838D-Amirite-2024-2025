@@ -16,7 +16,7 @@ extern pros::Motor LIFT;
 extern pros::ADIDigitalOut Mogo;
 // extern pros::ADIDigitalOut DaSorter;
 extern pros::ADIDigitalOut Doinker;
-extern pros::ADIDigitalOut Intakepiston;
+// extern pros::ADIDigitalOut Intakepiston;
 // extern pros::ADIDigitalOut Flipout;
 extern pros::Controller con; 
 extern pros::Imu imu;
